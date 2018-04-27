@@ -30,3 +30,10 @@ because the target function we want is: yi=sumation(Wi)(Xi)+b, use W and b to re
 predict
  the data to be predicted is double[][]newdata
  and the output will be int[]Result_Labels
+
+reference:
+[0]:http://citeseerx.ist.psu.edu/viewdoc/download?doi=10.1.1.43.4376&rep=rep1&type=pdf
+[1]:https://ocw.mit.edu/courses/sloan-school-of-management/15-097-prediction-machine-learning-and-statistics-spring-2012/lecture-notes/MIT15_097S12_lec12.pdf
+[2]:https://ocw.mit.edu/courses/electrical-engineering-and-computer-science/6-034-artificial-intelligence-fall-2010/tutorials/MIT6_034F10_tutor05.pdf
+[3]:https://martin-thoma.com/solving-linear-equations-with-gaussian-elimination/
+[4]:http://cs229.stanford.edu/materials/smo.pdf
