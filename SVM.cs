@@ -33,31 +33,6 @@ namespace SVM
         C3. negative gutter function: sumation(alpha_i*y_i*kernel(x_i,x))+b=-1
         C4. alpha_i>=0
         */
-       // private double[] ALPHAs_b;//length of N+1 vector, structure is: alpha1,alpha2,...,alphaN,b
-       // private double[][] ElementCoffS;//N+1xN+1 matrix
-        /*structure of CoffS Matrix
-         * y0   y1....  yN  0 
-         * e00 e01.... e0N  1
-         *e10  e11.....e1N  1
-         *.
-         * .
-         * .
-         * eN0 eN1....eNN  1
-        */
-        //private double[] VALofEQs;//length of N+1 
-        //structure of VALofEQs vector: 0 1....1
-        //CoffS*ALPHAs_b=VALofEQs->ALPHAs_b=VALofEQs*RevCoffS
-        //ALPHAs_b vector is the result we want to evaluate.
-       // private double[][] GAUSSMATRIX;//N+1*N+2 Matrix for Gaussian Elimination
-        /*structure of GAUSS Matrix
-         * y0   y1....  yN  0  0 
-         * e00 e01.... e0N  1 y0
-         *e10  e11.....e1N  1 y1
-         * .
-         * .
-         * .
-         * eN0 eN1.....eNN  1 yN
-        */
         public double[] W_vector;
         /*
          * the normal vector  we shall evaluate to geneate classification function :
@@ -68,7 +43,7 @@ namespace SVM
         public double b;
         /*
          * the coefficient b is in this function:     y=Trans(W_vector)(x_vector)+b
-         * b is the last element of ALPHAs_b
+         * 
         */
         public SupportVectorMachine(double[][] TrainingData, int[] Traininglabels, KernelType tp)
         {
@@ -79,19 +54,6 @@ namespace SVM
                
                
                 SimplifiedSMO SSMO = new SimplifiedSMO(INPUTVALUES, LABELS,1e1, tp);
-
-
-
-                // GAUSSMATRIX = BuildGuassianMatrix(tp);
-                // ElementCoffS = BuildElementMatrix(tp);
-                // StringBuilder a = new StringBuilder();
-                //  for (int j = 0; j < GAUSSMATRIX[0].Length; j++)
-                //  {
-                //      a.Append("[" + GAUSSMATRIX[1][j].ToString() + "]");
-                //  }
-                //  Console.WriteLine(a.ToString());
-                // ALPHAs_b = LeastSquareSolution(ElementCoffS, this.LABELS);
-                // ALPHAs_b = GaussianElimination(GAUSSMATRIX);
                 for (int i = 0; i <SSMO.ALPHAs.Length; i++)
                 {
                     Console.WriteLine("alpha[{0}] is:{1}", i, SSMO.ALPHAs[i]);
@@ -141,222 +103,7 @@ namespace SVM
                 }
             }
             return RESULTS;
-        }
-        #region OBSOLETE-Matrix Evaluation
-        /*
-        private double[][] BuildElementMatrix(KernelType type)
-        {
-
-            double[][] CoffS = new double[INPUTVALUES.Length + 1][];
-            CoffS[0] = new double[CoffS.Length];
-            for (int i = 0; i < LABELS.Length; i++)
-            {
-                CoffS[0][i] = LABELS[i];
-            }
-            CoffS[0][CoffS.Length - 1] = 0;
-            for (int i = 0; i < INPUTVALUES.Length; i++)
-            {
-                CoffS[i + 1] = new double[INPUTVALUES.Length + 1];
-                for (int j = 0; j < INPUTVALUES.Length; j++)
-                {
-                    if (type == KernelType.Linear)
-                    {
-                        CoffS[i + 1][j] = LinearKernel(INPUTVALUES[i], INPUTVALUES[j]);
-                    }
-                    else if (type == KernelType.RBF)
-                    {
-                        CoffS[i + 1][j] = RBF_Kernel(INPUTVALUES[i], INPUTVALUES[j], 0.02);
-                    }
-                }
-                CoffS[i + 1][INPUTVALUES.Length] = 1;
-            }
-            return CoffS;
-        }
-
-        private double[][] BuildGuassianMatrix(KernelType type)
-        {
-            double[][] GAUSSMatrix = new double[INPUTVALUES.Length + 1][];
-            GAUSSMatrix[0] = new double[GAUSSMatrix.Length + 1];
-            for (int i = 0; i < LABELS.Length; i++)
-            {
-                GAUSSMatrix[0][i] = LABELS[i];
-            }
-            GAUSSMatrix[0][GAUSSMatrix[0].Length - 2] = 0;
-            GAUSSMatrix[0][GAUSSMatrix[0].Length - 1] = 0;
-            for (int i = 0; i < INPUTVALUES.Length; i++)
-            {
-                GAUSSMatrix[i + 1] = new double[INPUTVALUES.Length + 2];
-                for (int j = 0; j < INPUTVALUES.Length; j++)
-                {
-                    if (type == KernelType.Linear)
-                    {
-                        GAUSSMatrix[i + 1][j] = LinearKernel(INPUTVALUES[i], INPUTVALUES[j]);
-                    }
-                    else
-                    {
-                        GAUSSMatrix[i + 1][j] = RBF_Kernel(INPUTVALUES[i], INPUTVALUES[j], 0.02);
-                    }
-                }
-                GAUSSMatrix[i + 1][INPUTVALUES.Length] = 1;
-                GAUSSMatrix[i + 1][GAUSSMatrix.Length] = LABELS[i];
-            }
-            return GAUSSMatrix;
-        }
-        private static double LinearKernel(double[] u, double[] v)
-        {
-            double res = 0.0;
-            if (u.Length == v.Length)
-            {
-                for (int i = 0; i < u.Length; i++)
-                {
-                    res += u[i] * v[i];
-                }
-            }
-            return res;
-        }
-        private static double RBF_Kernel(double[] u, double[] v, double theta)
-        {
-            double res = 0.0;
-            if (u.Length == v.Length)
-            {
-                for (int i = 0; i < u.Length; i++)
-                {
-                    res += (u[i] - v[i]) * (u[i] - v[i]);
-                }
-            }
-            return Math.Pow(Math.E, -theta * res);
-        }
-        private static double Poly_Kernel(double[] u, double[] v, double times)
-        {
-            double res = 0.0;
-            if (u.Length == v.Length)
-            {
-                for (int i = 0; i < u.Length; i++)
-                {
-                    res += u[i] * v[i];
-                }
-            }
-            return Math.Pow(res, times);
-        }
-        
-        private static double[] GaussianElimination(double[][] GAUSSMatrix)
-        {
-            double EPS = 1e-9;
-            double[][] OperatingMatrix = GAUSSMatrix;
-            int n = OperatingMatrix.Length;
-            for (int i = 0; i < n; i++)
-            {
-                // Search for maximum in this column
-                double MaxEL = Math.Abs(OperatingMatrix[i][i]);
-                int maxRow = i;
-                for (int k = i + 1; k < n; k++)
-                {
-                    if (MaxEL < Math.Abs(OperatingMatrix[k][i]))
-                    {
-                        MaxEL = Math.Abs(OperatingMatrix[k][i]);
-                        maxRow = k;
-                    }
-                }
-                // Swap maximum row with current row (column by column)
-                for (int k = i; k < n + 1; k++)
-                {
-                    double temp = OperatingMatrix[maxRow][k];
-                    OperatingMatrix[maxRow][k] = OperatingMatrix[i][k];
-                    OperatingMatrix[i][k] = temp;
-                }
-                // Make all rows below this one 0 in current column
-                for (int k = i + 1; k < n; k++)
-                {
-                    if (OperatingMatrix[i][i] == 0) {
-                        Console.WriteLine("[{0}] is 0", i);
-                        //OperatingMatrix[i][i] = 1e-7;
-                    }
-                    double c = -OperatingMatrix[k][i] / OperatingMatrix[i][i];
-                    for (int j = i; j < n + 1; j++)
-                    {
-                        if (i == j)
-                        {
-                            OperatingMatrix[k][j] = 0;
-                        }
-                        else
-                        {
-                            OperatingMatrix[k][j] += c * OperatingMatrix[i][j];
-                        }
-                    }
-                }
-            }
-            // Solve equation Ax=b for an upper triangular matrix A
-            double[] res = new double[n];
-            for (int i = n - 1; i >= 0; i--)
-            {
-                res[i] = OperatingMatrix[i][n] / OperatingMatrix[i][i];
-                for (int k = i - 1; k >= 0; k--)
-                {
-                    OperatingMatrix[k][n] -= OperatingMatrix[k][i] * res[i];
-                }
-            }
-            return res;
-        }
-        private static double[] LeastSquareSolution(double[][] ElementMatrix, int[] Labels)
-        {
-            double[][] Matrix = new double[ElementMatrix.Length][];
-            double[] VLEQ = new double[ElementMatrix.Length];
-            VLEQ[0] = 0;
-            for (int i = 0; i < Labels.Length; i++)
-            {
-                VLEQ[i + 1] = Labels[i];
-            }
-            for (int i = 0; i < Matrix.Length; i++)
-            {
-                Matrix[i] = new double[ElementMatrix[i].Length];
-                for (int j = 0; j < Matrix[i].Length; j++)
-                {
-                    for (int k = 0; k < Matrix.Length; k++)
-                    {
-                        Matrix[i][j] += ElementMatrix[i][k] * ElementMatrix[j][k];
-                    }
-                }
-            }
-            double[] temps = new double[VLEQ.Length];
-            for (int i = 0; i < Matrix.Length; i++)
-            {
-
-                for (int j = 0; j < Matrix[i].Length; j++)
-                {
-                    for (int k = 0; k < VLEQ.Length; k++)
-                    {
-                        temps[i] += VLEQ[k] * Matrix[i][j];
-                    }
-                }
-            }
-            double[][] GaussianMatrix = new double[ElementMatrix.Length][];
-            for (int i = 0; i < GaussianMatrix.Length; i++)
-            {
-                GaussianMatrix[i] = new double[ElementMatrix[i].Length + 1];
-                for (int j = 0; j < GaussianMatrix[i].Length - 1; j++)
-                {
-                    GaussianMatrix[i][j] = Matrix[i][j];
-                }
-                GaussianMatrix[i][GaussianMatrix[i].Length - 1] = temps[i];
-            }
-
-            return GaussianElimination(GaussianMatrix);
-        }*/
-        /* private double[] Wvector_Evaluate()
-              {
-                  double[] W = new double[INPUTVALUES[0].Length];
-                  for (int i = 0; i < INPUTVALUES.Length; i++)
-                  {
-                      for (int j = 0; j < INPUTVALUES[i].Length; j++)
-                      {
-                          W[j] += ALPHAs_b[i] * LABELS[i] * INPUTVALUES[i][j];
-                          //by KTT C0: w_vector=sumation(alpha_i*y_i*x_i)
-                      }
-                  }
-                  return W;
-              }*/
-        #endregion
-
+        } 
         private double[] Wvector_Evaluate(double[][] input_values,int[]labels, double[] alphas)
         {
             double[] W = new double[input_values[0].Length];
