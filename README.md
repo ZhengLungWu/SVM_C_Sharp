@@ -1,5 +1,5 @@
 # SVM_C_Sharp
-1.something balabala...
+>1.something balabala...
 
 it is the basic SVM classifier written in C#. 
 Although there are some good tool(like SVMLIB), but the C/C++ code is too difficult for me to understand.
@@ -13,42 +13,66 @@ I surveyed the internet and learned how to make the SVM work. I firstly used the
 
 In this stage, this SVM can only classify 2 classes. it will extend to multi class SVM soon.
 
-  
-2.how to use it
+## How to use it  
+>2.Training
 
-2.1input  
+>>2.1input  
 
-the type: doule[][] for input data, int[] for labels
+the type:
+``` csharp 
+doule[][]inputvalues; //for input data, 
+int[]labels;// for labels
+```
 
 Take iris data for example:
 
 the data length is 150, and it has 4 elements each row.
 
+
+``` csharp
 doule[][]IRIS_data=new double[150][];
+for(int i=0;i<150;i++)
+{
+IRIS_data[i]={parameter1,parameter2,parameter3,parameter4};// not legeal C# syntax, but for expressing.
+}
 
-for i form 0-149
+int[]labels 
+```
 
-IRIS_data[i]={parameter1,parameter2,parameter3,parameter4};
-
-int[]labels is the array that contains +1/-1, to let machine distingulish the class of corresponding row.
+is the array that contains +1/-1, to let machine distingulish the class of corresponding row.
 
 for example: there are 2 kinds of iris
 
 type A:+1, type B:-1
 
-so the array labels will be like: {1,-1,1....};
+so the array labels will be like: 
 
-2.2output
+```csharp
+labels={1,-1,1....};// not legeal C# syntax, but for expressing.
+```
+>>2.2output
 
-the output type : double[] for W vector, double for b coefficient
+the output type :
+```csharp
+double[]W_vector;// for W vector, 
+double b;//b coefficient
+```
+because the target function we want is: 
+```csharp
+for(int i=0;i<W_vector.Length;i++)y[i]=sumation(W_vector[i])(X[i])+b;
+```
+, use W and b to refer the result of new input data y[i] >=+1 or y[i]<=-1
 
-because the target function we want is: yi=sumation(Wi)(Xi)+b, use W and b to refer the result of new input dat ynew >=+1 or <=-1
+>3.predict
 
-3.predict
-
-the data to be predicted is double[][]newdata
- and the output will be int[]Result_Labels
-
+the data to be predicted is 
+```csharp
+double[][]newdata
+```
+and the output will be
+```csharp
+int[]Result_Labels
+```
 4.reference:
 
 [0]http://citeseerx.ist.psu.edu/viewdoc/download?doi=10.1.1.43.4376&rep=rep1&type=pdf
