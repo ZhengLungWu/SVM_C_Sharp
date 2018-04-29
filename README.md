@@ -5,7 +5,7 @@ it is the basic SVM classifier written in C#.
 Although there are some good tool(like SVMLIB), but the C/C++ code is too difficult for me to understand.
 If I use those packages, I feel like I just utilize black boxes to do alien job. 
 
-And in my working field(manufacturing/heavy industry),python is not so suitable to cooperate with PLC/Industrial control system/machine tools/plenty of sensors....balabala... 
+And in my working field(manufacturing/heavy industry),python is not so suitable to cooperate with PLC/Industrial control system/machine tools/plenty of sensors....balabala... Many python libs can not be used as well.
 
 Therefore I decided to build a SVM using C# by my own. 
 
