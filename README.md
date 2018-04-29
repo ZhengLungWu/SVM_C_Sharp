@@ -59,9 +59,10 @@ double b;//b coefficient
 ```
 because the target function we want is: 
 ```csharp
-for(int i=0;i<W_vector.Length;i++)y[i]=sumation(W_vector[i])(X[i])+b;
+double y=0;
+for(int i=0;i<W_vector.Length;i++)y+=(W_vector[i])*(X[i])+b;
 ```
-, use W and b to refer the result of new input data y[i] >=+1 or y[i]<=-1
+, use W and b to refer the result of new input data y >=+1 or y<=-1
 
 >3.predict
 
