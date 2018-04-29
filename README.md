@@ -39,7 +39,7 @@ IRIS_data[i]={parameter1,parameter2,parameter3,parameter4};// not legeal C# synt
 int[]labels 
 ```
 
-is the array that contains +1/-1, to let machine distingulish the class of corresponding row.
+int[]labels is the array that contains +1/-1, to let machine distingulish the class of corresponding row.
 
 for example: there are 2 kinds of iris
 
