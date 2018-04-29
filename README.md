@@ -60,7 +60,8 @@ double b;//b coefficient
 because the target function we want is: 
 ```csharp
 double y=0;
-for(int i=0;i<W_vector.Length;i++)y+=(W_vector[i])*(X[i])+b;
+for(int i=0;i<W_vector.Length;i++)y+=(W_vector[i])*(X[i]);
+y+=b;
 ```
 , use W and b to refer the result of new input data y >=+1 or y<=-1
 
